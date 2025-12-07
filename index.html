@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProCounsel Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>📊 User Registration Dashboard</h1>
+
+        <div class="filter-section">
+            <label>Select Date:</label>
+            <input type="date" id="dateInput">
+            <button onclick="fetchUsers()">Fetch Users</button>
+        </div>
+
+        <h3>Total Users: <span id="userCount">0</span></h3>
+
+        <div id="loader" class="loader hidden"></div>
+
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Date Registered</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <p id="message"></p>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
