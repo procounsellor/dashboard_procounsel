@@ -8,35 +8,49 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1>📊 User Registration Dashboard</h1>
+<div class="container">
+    <h2>📊 User Registration Filter</h2>
 
-        <div class="filter-section">
-            <label>Select Date:</label>
+    <div class="filter-section">
+        <div class="input-group">
+            <label>Date</label>
             <input type="date" id="dateInput">
-            <button onclick="fetchUsers()">Fetch Users</button>
         </div>
 
-        <h3>Total Users: <span id="userCount">0</span></h3>
+        <div class="input-group">
+            <label>Start Time</label>
+            <input type="time" id="startTime" value="00:00">
+        </div>
 
-        <div id="loader" class="loader hidden"></div>
+        <div class="input-group">
+            <label>End Time</label>
+            <input type="time" id="endTime" value="23:59">
+        </div>
 
+        <button class="filter-btn" onclick="fetchUsers()">Apply Filter</button>
+    </div>
+
+    <h3>Total Users: <span id="userCount">0</span></h3>
+
+    <div id="loader" class="loader hidden"></div>
+
+    <div class="table-wrapper">
         <table id="usersTable">
             <thead>
                 <tr>
                     <th>User ID</th>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Date Registered</th>
+                    <th>Course</th>
+                    <th>Interested States</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
-
-        <p id="message"></p>
-
     </div>
 
-    <script src="script.js"></script>
+    <p id="message"></p>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
