@@ -1,5 +1,8 @@
 async function fetchUsers() {
     const date = document.getElementById("dateInput").value;
+    const startTime = document.getElementById("startTime").value || "00:00";
+    const endTime = document.getElementById("endTime").value || "23:59";
+
     if (!date) return alert("Please select a date!");
 
     const loader = document.getElementById("loader");
@@ -22,38 +25,34 @@ async function fetchUsers() {
         const data = await response.json();
         loader.classList.add("hidden");
 
-        const users = data?.users || [];
-        const count = data?.count || 0;
+        let users = data?.users || [];
 
-        document.getElementById("userCount").innerText = count;
+        const startDateTime = new Date(`${date}T${startTime}:00`).getTime();
+        const endDateTime = new Date(`${date}T${endTime}:59`).getTime();
+
+        users = users.filter(u => {
+            if (!u?.dateCreated?.seconds) return false;
+            const userTime = u.dateCreated.seconds * 1000;
+            return userTime >= startDateTime && userTime <= endDateTime;
+        });
+
+        document.getElementById("userCount").innerText = users.length;
 
         if (users.length === 0) {
-            document.getElementById("message").innerText = "No users found for this date.";
+            document.getElementById("message").innerText = "No users found for this time range.";
             return;
         }
 
         users.forEach(u => {
-            const timestamp = u?.dateCreated;
-            let formattedDate = "N/A";
-
-            if (timestamp && timestamp.seconds) {
-                const d = new Date(timestamp.seconds * 1000);
-                formattedDate = d.toLocaleString("en-IN", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit"
-                });
-            }
+            const states = Array.isArray(u?.userInterestedStateOfCounsellors)
+                ? u.userInterestedStateOfCounsellors.join(", ")
+                : "N/A";
 
             const row = `
                 <tr>
                     <td>${u?.userId || "N/A"}</td>
-                    <td>${(u?.firstName || "") + " " + (u?.lastName || "")}</td>
-                    <td>${u?.city || "N/A"}</td>
-                    <td>${formattedDate}</td>
+                    <td>${u?.interestedCourse || "N/A"}</td>
+                    <td>${states}</td>
                 </tr>
             `;
 
@@ -63,6 +62,6 @@ async function fetchUsers() {
     } catch (err) {
         loader.classList.add("hidden");
         console.error(err);
-        alert("Something went wrong! Check console logs.");
+        alert("Something went wrong!");
     }
 }
