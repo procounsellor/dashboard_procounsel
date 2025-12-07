@@ -1,57 +1,71 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f4f4f7;
     margin: 0;
+    padding: 0;
 }
 
 .container {
+    width: 95%;
     max-width: 900px;
-    margin: 40px auto;
+    margin: 20px auto;
     background: white;
-    padding: 25px;
+    padding: 18px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .filter-section {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
-button {
-    background-color: #ff6600;
-    color: white;
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    min-width: 110px;
+}
+
+label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+input {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.filter-btn {
+    width: 100%;
+    background: #ff6600;
+    color: #fff;
     border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 5px;
+    font-size: 15px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #e35c00;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th, td {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
+.filter-btn:hover {
+    background: #e05a00;
 }
 
 .loader {
-    width: 30px;
-    height: 30px;
     border: 3px solid #ccc;
     border-top-color: #ff6600;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 .hidden {
@@ -62,7 +76,47 @@ th, td {
     to { transform: rotate(360deg); }
 }
 
-#message {
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
     text-align: center;
-    margin-top: 10px;
+}
+
+th {
+    background: #fafafa;
+    font-size: 14px;
+}
+
+td {
+    font-size: 13px;
+}
+
+@media screen and (max-width: 600px) {
+    th, td {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-group {
+        width: 100%;
+    }
 }
