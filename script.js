@@ -1,67 +1,70 @@
-async function fetchUsers() {
-    const date = document.getElementById("dateInput").value;
-    const startTime = document.getElementById("startTime").value || "00:00";
-    const endTime = document.getElementById("endTime").value || "23:59";
+const COURSE_ID = "a997f3a9-4a36-4395-9f90-847b739fb225";  // GuruCool Crash Course
 
-    if (!date) return alert("Please select a date!");
+function fetchEnrollments() {
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+  const startTime = document.getElementById("startTime").value;
+  const endTime = document.getElementById("endTime").value;
 
-    const loader = document.getElementById("loader");
-    loader.classList.remove("hidden");
+  if (!startDate || !endDate || !startTime || !endTime) {
+    alert("Please select all date and time fields");
+    return;
+  }
 
-    const tableBody = document.querySelector("#usersTable tbody");
-    tableBody.innerHTML = "";
-    document.getElementById("message").innerText = "";
+fetch("https://procounsellor-backend-1000407154647.asia-south1.run.app/api/dashboard/getCourseEnrollment", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    courseId: COURSE_ID,
+    startDate,
+    endDate,
+    startTime,
+    endTime
+  })
+})
+.then(async res => {
+  const text = await res.text();   // read raw response first
 
-    try {
-        const response = await fetch(
-            `https://procounsellor-backend-1000407154647.asia-south1.run.app/api/dashboard/filterUsersByDate?date=${date}`,
-            {
-                headers: {
-                    "Accept": "application/json"
-                }
-            }
-        );
+  if (!res.ok) {
+    console.error("Server error:", text);
+    throw new Error("Server returned error");
+  }
 
-        const data = await response.json();
-        loader.classList.add("hidden");
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.error("Invalid JSON:", text);
+    throw new Error("Invalid JSON response from server");
+  }
+})
+.then(data => {
+  const table = document.getElementById("resultTable");
+  table.innerHTML = "";
 
-        let users = data?.users || [];
+  if (!data.enrollments || data.enrollments.length === 0) {
+    table.innerHTML = "<tr><td colspan='2'>No enrollments found</td></tr>";
+    return;
+  }
 
-        const startDateTime = new Date(`${date}T${startTime}:00`).getTime();
-        const endDateTime = new Date(`${date}T${endTime}:59`).getTime();
+  data.enrollments.forEach(e => {
+    const enrolledAt = e.enrolledAt
+      ? new Date(e.enrolledAt.seconds * 1000).toLocaleString()
+      : "N/A";
 
-        users = users.filter(u => {
-            if (!u?.dateCreated?.seconds) return false;
-            const userTime = u.dateCreated.seconds * 1000;
-            return userTime >= startDateTime && userTime <= endDateTime;
-        });
-
-        document.getElementById("userCount").innerText = users.length;
-
-        if (users.length === 0) {
-            document.getElementById("message").innerText = "No users found for this time range.";
-            return;
-        }
-
-        users.forEach(u => {
-            const states = Array.isArray(u?.userInterestedStateOfCounsellors)
-                ? u.userInterestedStateOfCounsellors.join(", ")
-                : "N/A";
-
-            const row = `
-                <tr>
-                    <td>${u?.userId || "N/A"}</td>
-                    <td>${u?.interestedCourse || "N/A"}</td>
-                    <td>${states}</td>
-                </tr>
-            `;
-
-            tableBody.innerHTML += row;
-        });
-
-    } catch (err) {
-        loader.classList.add("hidden");
-        console.error(err);
-        alert("Something went wrong!");
-    }
+    const row = `
+      <tr>
+        <td>${e.userId}</td>
+        <td>${enrolledAt}</td>
+      </tr>
+    `;
+    table.innerHTML += row;
+  });
+})
+.catch(err => {
+  alert("Failed to fetch enrollments. Check console for details.");
+  console.error(err);
+});
 }
