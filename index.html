@@ -1,54 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProCounsel Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Enrollment Analytics</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>📊 User Registration Filter</h2>
+  <h2>📊 Enrollment Analytics</h2>
+  <p class="subtitle">GuruCool Crash Course</p>
 
-    <div class="filter-section">
-        <div class="input-group">
-            <label>Date</label>
-            <input type="date" id="dateInput">
-        </div>
-
-        <div class="input-group">
-            <label>Start Time</label>
-            <input type="time" id="startTime" value="00:00">
-        </div>
-
-        <div class="input-group">
-            <label>End Time</label>
-            <input type="time" id="endTime" value="23:59">
-        </div>
-
-        <button class="filter-btn" onclick="fetchUsers()">Apply Filter</button>
+  <div class="form">
+    <div class="field">
+      <label>Start Date</label>
+      <input type="date" id="startDate">
     </div>
 
-    <h3>Total Users: <span id="userCount">0</span></h3>
-
-    <div id="loader" class="loader hidden"></div>
-
-    <div class="table-wrapper">
-        <table id="usersTable">
-            <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Course</th>
-                    <th>Interested States</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div class="field">
+      <label>Start Time</label>
+      <input type="time" id="startTime" value="00:00">
     </div>
 
-    <p id="message"></p>
+    <div class="field">
+      <label>End Date</label>
+      <input type="date" id="endDate">
+    </div>
 
+    <div class="field">
+      <label>End Time</label>
+      <input type="time" id="endTime" value="23:59">
+    </div>
+
+    <button onclick="fetchEnrollments()">Fetch Enrollments</button>
+  </div>
+
+  <div id="resultBox">
+    <h3>Results</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Enrolled At</th>
+        </tr>
+      </thead>
+      <tbody id="resultTable"></tbody>
+    </table>
+  </div>
 </div>
 
 <script src="script.js"></script>
