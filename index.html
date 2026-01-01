@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Enrollment Analytics</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -35,7 +36,20 @@
   </div>
 
   <div id="resultBox">
-    <h3>Results</h3>
+    <h3>📈 Enrollment Summary</h3>
+
+    <div class="stats">
+      <div class="stat-card">
+        <span>Total Students</span>
+        <h2 id="totalStudents">0</h2>
+      </div>
+
+      <div class="stat-card">
+        <span>Enrollments in Selected Range</span>
+        <h2 id="rangeCount">0</h2>
+      </div>
+    </div>
+
     <table>
       <thead>
         <tr>
